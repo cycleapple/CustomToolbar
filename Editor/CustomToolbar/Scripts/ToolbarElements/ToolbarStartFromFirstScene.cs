@@ -35,11 +35,23 @@ internal class ToolbarStartFromFirstScene : BaseToolbarElement {
 		}
 	}
 
-	private static void LogPlayModeState(PlayModeStateChange state) {
-		if (state == PlayModeStateChange.EnteredEditMode && EditorPrefs.HasKey("LastActiveSceneToolbar")) {
-			EditorSceneManager.OpenScene(
-				SceneUtility.GetScenePathByBuildIndex(EditorPrefs.GetInt("LastActiveSceneToolbar")));
+	private static void LogPlayModeState(PlayModeStateChange state)
+	{
+		if (state == PlayModeStateChange.EnteredEditMode && EditorPrefs.HasKey("LastActiveSceneToolbar"))
+		{
+			int buildIndex = EditorPrefs.GetInt("LastActiveSceneToolbar");
+
+			if (buildIndex >= 0 && buildIndex < SceneManager.sceneCountInBuildSettings)
+			{
+				EditorSceneManager.OpenScene(SceneUtility.GetScenePathByBuildIndex(buildIndex));
+			}
+			else
+			{
+				Debug.LogError($"Invalid scene build index: {buildIndex}");
+			}
+
 			EditorPrefs.DeleteKey("LastActiveSceneToolbar");
 		}
 	}
+
 }
