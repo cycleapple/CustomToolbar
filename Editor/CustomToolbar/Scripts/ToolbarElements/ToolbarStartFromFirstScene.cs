@@ -47,11 +47,13 @@ internal class ToolbarStartFromFirstScene : BaseToolbarElement {
 			}
 			else
 			{
-				Debug.LogError($"Invalid scene build index: {buildIndex}");
+				Debug.LogWarning($"Invalid scene build index: {buildIndex}. Opening the first scene in the build settings.");
+				EditorSceneManager.OpenScene(SceneUtility.GetScenePathByBuildIndex(0));
 			}
 
 			EditorPrefs.DeleteKey("LastActiveSceneToolbar");
 		}
 	}
+
 
 }
